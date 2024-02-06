@@ -1,13 +1,19 @@
 package com.globant.javacodecamp.players;
 
 import com.globant.javacodecamp.players.model.Invoice;
+import com.globant.javacodecamp.players.model.Performance;
 import com.globant.javacodecamp.players.model.Play;
 
 import java.text.NumberFormat;
 import java.util.Locale;
 import java.util.Map;
 
-public class StatementPrinter {
+public class SimpleTextStatementPrinter {
+
+    private final Map<String,PlayTypeAmountCalculator> amountCalculators = Map.of(
+            "comedy",new ComedyAmountCalculatorImpl(),
+            "tragedy",new TragedyAmountCalculatorImpl()
+    );
 
     public String print(Invoice invoice, Map<String, Play> plays) {
         var totalAmount = 0;
@@ -20,23 +26,7 @@ public class StatementPrinter {
             var play = plays.get(perf.playID);
             var thisAmount = 0;
 
-            switch (play.type) {
-                case "tragedy":
-                    thisAmount = 40000;
-                    if (perf.audience > 30) {
-                        thisAmount += 1000 * (perf.audience - 30);
-                    }
-                    break;
-                case "comedy":
-                    thisAmount = 30000;
-                    if (perf.audience > 20) {
-                        thisAmount += 10000 + 500 * (perf.audience - 20);
-                    }
-                    thisAmount += 300 * perf.audience;
-                    break;
-                default:
-                    throw new Error("unknown type: ${play.type}");
-            }
+            thisAmount = calculateAmount(perf, play);
 
             // add volume credits
             volumeCredits += Math.max(perf.audience - 30, 0);
@@ -52,4 +42,14 @@ public class StatementPrinter {
         return result;
     }
 
-}
+    private  int calculateAmount(Performance performance, Play play) {
+        int thisAmount;
+
+      var amountCalculator =  amountCalculators.get(play.type);
+      if (amountCalculator == null)  throw new Error("unknown type: ${play.type}");
+
+      return amountCalculator.calculateAmount(performance,play);
+
+        }
+    }
+

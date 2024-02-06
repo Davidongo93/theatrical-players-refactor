@@ -20,8 +20,8 @@ class StatementPrinterTest {
     Invoice invoice = new Invoice("BigCo", List.of(
             new Performance("othello", 40)));
 
-    StatementPrinter statementPrinter = new StatementPrinter();
-    var actualStatement = statementPrinter.print(invoice, plays);
+    SimpleTextStatementPrinter simpleTextStatementPrinter = new SimpleTextStatementPrinter();
+    var actualStatement = simpleTextStatementPrinter.print(invoice, plays);
 
     var expectedStatement = """
             Statement for BigCo
@@ -43,8 +43,8 @@ class StatementPrinterTest {
             new Performance("as-like", 35),
             new Performance("othello", 40)));
 
-    StatementPrinter statementPrinter = new StatementPrinter();
-    var actualStatement = statementPrinter.print(invoice, plays);
+    SimpleTextStatementPrinter simpleTextStatementPrinter = new SimpleTextStatementPrinter();
+    var actualStatement = simpleTextStatementPrinter.print(invoice, plays);
 
     var expectedStatement = """
             Statement for BigCo
