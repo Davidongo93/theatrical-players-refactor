@@ -2,6 +2,7 @@ package com.globant.javacodecamp.players;
 
 import com.globant.javacodecamp.players.model.Performance;
 import com.globant.javacodecamp.players.model.Play;
+//TODO start to review the refactory this week in order to finish on 1st april week
 
 public class ComedyAmountCalculatorImpl implements PlayTypeAmountCalculator {
     @Override
